@@ -4,6 +4,7 @@ import { BaseType } from "../Type/BaseType";
 import { BooleanType } from "../Type/BooleanType";
 import { DefinitionType } from "../Type/DefinitionType";
 import { EnumType } from "../Type/EnumType";
+import { FunctionType } from "../Type/FunctionType";
 import { LiteralType } from "../Type/LiteralType";
 import { UnionType } from "../Type/UnionType";
 
@@ -30,6 +31,12 @@ function* _extractLiterals(type: BaseType): Iterable<string> {
         return;
     }
 
+    if (type instanceof FunctionType) {
+        yield* type.getName();
+        return;
+    }
+
+    console.log("hhhi");
     throw new UnknownTypeError(type);
 }
 

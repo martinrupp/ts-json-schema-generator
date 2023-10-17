@@ -5,6 +5,7 @@ import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
+import { UnknownTypeNodeParser } from "./NodeParser/UnknownTypeNodeParser";
 
 export class ChainNodeParser implements SubNodeParser, MutableParser {
     protected readonly typeCaches = new WeakMap<ts.Node, Map<string, BaseType>>();
@@ -47,6 +48,7 @@ export class ChainNodeParser implements SubNodeParser, MutableParser {
             }
         }
 
-        throw new UnknownNodeError(node, context.getReference());
+        //throw new UnknownNodeError(node, context.getReference());
+        return new UnknownTypeNodeParser();
     }
 }
