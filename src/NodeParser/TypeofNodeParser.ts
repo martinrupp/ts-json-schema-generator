@@ -26,6 +26,11 @@ export class TypeofNodeParser implements SubNodeParser {
         }
 
         const valueDec = symbol.valueDeclaration!;
+        // if (valueDec === undefined) {
+        //     console.log("sdklfj");
+        //     return new UnknownType(`{}`);
+        // }
+        // else
         if (ts.isEnumDeclaration(valueDec)) {
             return this.createObjectFromEnum(valueDec, context, reference);
         } else if (
