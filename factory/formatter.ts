@@ -2,6 +2,10 @@ import { ChainTypeFormatter } from "../src/ChainTypeFormatter";
 import { CircularReferenceTypeFormatter } from "../src/CircularReferenceTypeFormatter";
 import { Config } from "../src/Config";
 import { MutableTypeFormatter } from "../src/MutableTypeFormatter";
+import { Definition } from "../src/Schema/Definition";
+import { SubTypeFormatter } from "../src/SubTypeFormatter";
+import { BaseType } from "../src/Type/BaseType";
+import { FunctionType } from "../src/Type/FunctionType";
 import { TypeFormatter } from "../src/TypeFormatter";
 import { AliasTypeFormatter } from "../src/TypeFormatter/AliasTypeFormatter";
 import { AnnotatedTypeFormatter } from "../src/TypeFormatter/AnnotatedTypeFormatter";
@@ -35,6 +39,18 @@ export type FormatterAugmentor = (
     circularReferenceTypeFormatter: CircularReferenceTypeFormatter
 ) => void;
 
+export class FunctionFormatter implements SubTypeFormatter {
+    public supportsType(type: FunctionType): boolean {
+        return type instanceof FunctionType;
+    }
+    public getDefinition(type: FunctionType): Definition {
+        return { type: "string" };
+    }
+    public getChildren(type: FunctionType): BaseType[] {
+        return [];
+    }
+}
+
 export function createFormatter(config: Config, augmentor?: FormatterAugmentor): TypeFormatter {
     const chainTypeFormatter = new ChainTypeFormatter([]);
     const circularReferenceTypeFormatter = new CircularReferenceTypeFormatter(chainTypeFormatter);
@@ -44,6 +60,7 @@ export function createFormatter(config: Config, augmentor?: FormatterAugmentor):
     }
 
     chainTypeFormatter
+        .addTypeFormatter(new FunctionFormatter())
         .addTypeFormatter(new AnnotatedTypeFormatter(circularReferenceTypeFormatter))
 
         .addTypeFormatter(new StringTypeFormatter())

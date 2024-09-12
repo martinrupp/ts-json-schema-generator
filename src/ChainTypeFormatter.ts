@@ -29,6 +29,8 @@ export class ChainTypeFormatter implements SubTypeFormatter, MutableTypeFormatte
             }
         }
 
+        console.log("sdsd");
+
         throw new UnknownTypeError(type);
     }
 }
